@@ -36,27 +36,46 @@ def main():
             pickle.dump(creds, token)
 
     service = build('sheets', 'v4', credentials=creds)
-    spreadsheet = {
-        'properties': {
-        'title': "qsFile"
-        }
+    # Creating
+    # spreadsheet = {
+    #     'properties': {
+    #     'title': "qsFile"
+    #     }
+    # }
+    # spreadsheet = service.spreadsheets().create(body=spreadsheet,
+    #                                 fields='spreadsheetId').execute()
+    # print('Spreadsheet ID: {0}'.format(spreadsheet.get('spreadsheetId')))
+    # newSheetID = format(spreadsheet.get('spreadsheetId'))
+    newSheetID = '1nMNgmb8rTmV8di54svKZGVgtzVOjZxtjfRaVMiSg4KU'
+    # Writing
+    range_name = 'Sheet1!A4:B4'
+    values = [
+        [
+        "2", "sup"
+        ],
+        # APIdditional rows ...
+    ]
+    body = {
+        'values': values
     }
-    spreadsheet = service.spreadsheets().create(body=spreadsheet,
-                                    fields='spreadsheetId').execute()
-    print('Spreadsheet ID: {0}'.format(spreadsheet.get('spreadsheetId')))
-    # Call the Sheets API
-    sheet = service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                                range=SAMPLE_RANGE_NAME).execute()
-    values = result.get('values', [])
+    result = service.spreadsheets().values().update(
+        spreadsheetId=newSheetID, range=range_name,
+        valueInputOption='USER_ENTERED', body=body).execute()
+    print('{0} cells updated.'.format(result.get('updatedCells')))
 
-    if not values:
-        print('No data found.')
-    else:
-        print('Name, Major:')
-        for row in values:
-            # Print columns A and E, which correspond to indices 0 and 4.
-            print('%s, %s' % (row[0], row[4]))
+    # Reading
+    # sheet = service.spreadsheets()
+    # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+    #                             range=SAMPLE_RANGE_NAME).execute()
+    # values = result.get('values', [])
+
+    # if not values:
+    #     print('No data found.')
+    # else:
+    #     print('Name, Major:')
+    #     for row in values:
+    #         # Print columns A and E, which correspond to indices 0 and 4.
+    #         print('%s, %s' % (row[0], row[4]))
 
 if __name__ == '__main__':
     main()
