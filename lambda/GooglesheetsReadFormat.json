@@ -1,10 +1,12 @@
 {
+  "sheetId":"X",
+  "range":"Sheet1",
   "access_token": "X",
-  "expires_in": X,
-  "client_id":"X",
-  "client_secret":"X",
+  "expires_in": 3600,
+  "client_id": "X",
+  "client_secret": "X",
   "refresh_token": "X",
-  "scope": "X",
-  "token_uri":"https://oauth2.googleapis.com/token",
+  "scope": "https://www.googleapis.com/auth/spreadsheets",
+  "token_uri": "https://oauth2.googleapis.com/token",
   "token_type": "Bearer"
 }

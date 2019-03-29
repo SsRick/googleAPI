@@ -2,9 +2,6 @@ import json
 from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 
-SAMPLE_RANGE_NAME = 'Sheet1!A1:B5'
-newSheetID = '13d372cdvDdlft5GqOhtThB_fRGKlaAojrHBvXAJ0-WU'
-
 def lambda_handler(event, context):
     creds = Credentials(token=event['access_token'],
                         refresh_token=event['refresh_token'],
@@ -14,6 +11,8 @@ def lambda_handler(event, context):
                         scopes=event['scope'])
     
     service = build('sheets', 'v4', credentials=creds,cache_discovery=False)
+    SAMPLE_RANGE_NAME = event['range']
+    newSheetID = event['sheetId']
     sheet = service.spreadsheets()
     result = sheet.values().get(spreadsheetId=newSheetID,
                                 range=SAMPLE_RANGE_NAME).execute()
