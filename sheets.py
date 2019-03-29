@@ -9,8 +9,8 @@ from google.auth.transport.requests import Request
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
-SAMPLE_SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
-SAMPLE_RANGE_NAME = 'Class Data!A2:E'
+SAMPLE_SPREADSHEET_ID = '1nMNgmb8rTmV8di54svKZGVgtzVOjZxtjfRaVMiSg4KU'
+SAMPLE_RANGE_NAME = 'Sheet1!A1:B4'
 
 def main():
     """Shows basic usage of the Sheets API.
@@ -39,43 +39,56 @@ def main():
     # Creating
     # spreadsheet = {
     #     'properties': {
-    #     'title': "qsFile"
+    #     'title': "checkFile"
     #     }
     # }
     # spreadsheet = service.spreadsheets().create(body=spreadsheet,
     #                                 fields='spreadsheetId').execute()
     # print('Spreadsheet ID: {0}'.format(spreadsheet.get('spreadsheetId')))
     # newSheetID = format(spreadsheet.get('spreadsheetId'))
-    newSheetID = '1nMNgmb8rTmV8di54svKZGVgtzVOjZxtjfRaVMiSg4KU'
+    
+    # newSheetID = '1nMNgmb8rTmV8di54svKZGVgtzVOjZxtjfRaVMiSg4KU'
+    newSheetID = '13d372cdvDdlft5GqOhtThB_fRGKlaAojrHBvXAJ0-WU'
     # Writing
-    range_name = 'Sheet1!A4:B4'
-    values = [
-        [
-        "2", "sup"
-        ],
-        # APIdditional rows ...
-    ]
-    body = {
-        'values': values
-    }
-    result = service.spreadsheets().values().update(
-        spreadsheetId=newSheetID, range=range_name,
-        valueInputOption='USER_ENTERED', body=body).execute()
-    print('{0} cells updated.'.format(result.get('updatedCells')))
+    # range_name = 'Sheet1!A2:B2'
+    # values = [
+    #     [
+    #     "2", "bye"
+    #     ],
+    #     # APIdditional rows ...
+    # ]
+    # body = {
+    #     'values': values
+    # }
+    # result = service.spreadsheets().values().update(
+    #     spreadsheetId=newSheetID, range=range_name,
+    #     valueInputOption='USER_ENTERED', body=body).execute()
+    # print('{0} cells updated.'.format(result.get('updatedCells')))
 
     # Reading
-    # sheet = service.spreadsheets()
-    # result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-    #                             range=SAMPLE_RANGE_NAME).execute()
-    # values = result.get('values', [])
+    sheet = service.spreadsheets()
+    result = sheet.values().get(spreadsheetId=newSheetID,
+                                range=SAMPLE_RANGE_NAME).execute()
+    values = result.get('values', [])
 
-    # if not values:
-    #     print('No data found.')
-    # else:
-    #     print('Name, Major:')
-    #     for row in values:
-    #         # Print columns A and E, which correspond to indices 0 and 4.
-    #         print('%s, %s' % (row[0], row[4]))
+    if not values:
+        print('No data found.')
+    else:
+        print('Sl, Name:')
+        for row in values:
+            # Print columns A and E, which correspond to indices 0 and 4.
+            print('%s, %s' % (row[0], row[1]))
 
+    # Deleting the sheet
+    # requests = []
+    # requests.append({
+    #     'deleteSheet': {'sheetId' : 1273582596}
+    # })
+    # body = {
+    #     'requests': requests
+    # }
+    # response = service.spreadsheets().batchUpdate(
+    #     spreadsheetId=newSheetID,
+    #     body=body).execute()
 if __name__ == '__main__':
     main()
