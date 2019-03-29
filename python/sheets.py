@@ -4,6 +4,7 @@ import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
+import json
 
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
@@ -50,35 +51,41 @@ def main():
     # newSheetID = '1nMNgmb8rTmV8di54svKZGVgtzVOjZxtjfRaVMiSg4KU'
     newSheetID = '13d372cdvDdlft5GqOhtThB_fRGKlaAojrHBvXAJ0-WU'
     # Writing
-    # range_name = 'Sheet1!A2:B2'
-    # values = [
-    #     [
-    #     "2", "bye"
-    #     ],
-    #     # APIdditional rows ...
-    # ]
-    # body = {
-    #     'values': values
-    # }
+    range_name = 'Sheet1!A2:B2'
+    values = [
+        [
+        "8", "happen"
+        ],
+        # APIdditional rows ...
+    ]
+    body = {
+        'values': values
+    }
     # result = service.spreadsheets().values().update(
     #     spreadsheetId=newSheetID, range=range_name,
     #     valueInputOption='USER_ENTERED', body=body).execute()
     # print('{0} cells updated.'.format(result.get('updatedCells')))
 
+    result = service.spreadsheets().values().append(
+        spreadsheetId=newSheetID, valueInputOption='USER_ENTERED', body=body, range='Sheet1!A1:E12').execute()
+    print('{0} cells updated.'.format(result.get('updates').get('updatedCells')))
+
     # Reading
-    sheet = service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=newSheetID,
-                                range=SAMPLE_RANGE_NAME).execute()
-    values = result.get('values', [])
+    # sheet = service.spreadsheets()
+    # result = sheet.values().get(spreadsheetId=newSheetID,
+    #                             range=SAMPLE_RANGE_NAME).execute()
+    # values = result.get('values', [])
 
-    if not values:
-        print('No data found.')
-    else:
-        print('Sl, Name:')
-        for row in values:
-            # Print columns A and E, which correspond to indices 0 and 4.
-            print('%s, %s' % (row[0], row[1]))
+    # if not values:
+    #     print('No data found.')
+    # else:
+    #     print('Sl, Name:')
+    #     for row in values:
+    #         # Print columns A and E, which correspond to indices 0 and 4.
+    #         print('%s, %s' % (row[0], row[1]))
 
+    # spreadsheet = service.spreadsheets().get(spreadsheetId=newSheetID).execute()
+    # print(spreadsheet)
     # Deleting the sheet
     # requests = []
     # requests.append({

@@ -10,15 +10,18 @@ def lambda_handler(event, context):
                         client_secret=event['client_secret'],
                         scopes=event['scope'])
     service = build('sheets', 'v4', credentials=creds,cache_discovery=False)
-    spreadsheet = {
-        'properties': {
-        'title': event['spreadsheetName']
+    sheetID = event['sheetId']
+    range_name = event['range_name']
+    values = [
+        [event['key'], event['value']],
+        ]
+    body = {
+        'values': values
         }
-    }
-    spreadsheet = service.spreadsheets().create(body=spreadsheet,
-                                    fields='spreadsheetId').execute()
-    print('Spreadsheet ID: {0}'.format(spreadsheet.get('spreadsheetId')))
+        
+    result = service.spreadsheets().values().append(
+        spreadsheetId=sheetID, valueInputOption='USER_ENTERED', body=body, range=range_name).execute()
     return {
         'statusCode': 200,
-        'body': json.dumps('Success!')
+        'body': json.dumps('{0} cells updated.'.format(result.get('updates').get('updatedCells')))
     }
