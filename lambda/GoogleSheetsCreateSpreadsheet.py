@@ -17,8 +17,8 @@ def lambda_handler(event, context):
     }
     spreadsheet = service.spreadsheets().create(body=spreadsheet,
                                     fields='spreadsheetId').execute()
-    print('Spreadsheet ID: {0}'.format(spreadsheet.get('spreadsheetId')))
+    # print('Spreadsheet ID: {0}'.format(spreadsheet.get('spreadsheetId')))
     return {
         'statusCode': 200,
-        'body': json.dumps('Success!')
+        'body': spreadsheet.get('spreadsheetId')
     }
